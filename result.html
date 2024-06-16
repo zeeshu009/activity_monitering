@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Result</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+        }
+
+        table {
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Activity Monitoring</h2>
+        <div class="container">
+            <div>
+                <ol class="d-flex justify-content-around">
+                    <li>OPEN_DOOR</li>
+                    <li>RUB_HANDS</li>
+                    <li>DRINK</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-success" role="alert">
+                    Random Forest Results
+                </div>
+                <div class="alert alert-info" role="alert">
+                    Accuracy: {{ rf_accuracy }}
+                </div>
+                <div class="alert alert-info" role="alert">
+                    F1 Score: {{ rf_f1 }}
+                </div>
+                <div>
+                    <h4>Confusion Matrix</h4>
+                    <table class="table table-bordered">
+                        {% for row in rf_conf_matrix %}
+                        <tr>
+                            {% for cell in row %}
+                            <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div>
+                    <h4>Graph</h4>
+                    <img src="data:image/png;base64,{{ rf_graph_url }}" alt="Graph" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success" role="alert">
+                    SVM Results
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    Accuracy: {{ svm_accuracy }}
+                </div>
+                <div class="alert alert-danger" role="alert">
+                    F1 Score: {{ svm_f1 }}
+                </div>
+                <div>
+                    <h4>Confusion Matrix</h4>
+                    <table class="table table-bordered">
+                        {% for row in svm_conf_matrix %}
+                        <tr>
+                            {% for cell in row %}
+                            <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div>
+                    <h4>Graph</h4>
+                    <img src="data:image/png;base64,{{ svm_graph_url }}" alt="Graph" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <a href="{{ url_for('upload_file') }}" class="btn btn-primary btn-block mt-3">Upload Another File</a>
+    </div>
+
+</body>
+
+</html>
